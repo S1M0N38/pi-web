@@ -22,7 +22,7 @@
     "unpdf": "^1.6.2"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^24.0.0",
     "@types/turndown": "^5.0.6",
     "typescript": "^5.0.0"
   }
