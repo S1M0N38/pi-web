@@ -1,29 +1,33 @@
 {
-  "name": "pi-web-access-min",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "license": "MIT",
-  "pi": {
-    "extensions": ["./index.ts"]
-  },
-  "scripts": {
-    "typecheck": "tsc"
-  },
-  "peerDependencies": {
-    "@earendil-works/pi-ai": "*",
-    "@earendil-works/pi-coding-agent": "*"
-  },
-  "dependencies": {
-    "@mozilla/readability": "^0.6.0",
-    "defuddle": "0.19.3",
-    "linkedom": "^0.16.0",
-    "turndown": "^7.2.0",
-    "unpdf": "^1.6.2"
-  },
-  "devDependencies": {
-    "@types/node": "^24.0.0",
-    "@types/turndown": "^5.0.6",
-    "typescript": "^5.0.0"
-  }
+	"name": "pi-web",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"license": "MIT",
+	"pi": {
+		"extensions": [
+			"./index.ts"
+		]
+	},
+	"scripts": {
+		"typecheck": "tsc",
+		"test": "node --test test/e2e.test.ts"
+	},
+	"peerDependencies": {
+		"@earendil-works/pi-ai": "*",
+		"@earendil-works/pi-coding-agent": "*",
+		"typebox": "*"
+	},
+	"dependencies": {
+		"@mozilla/readability": "^0.6.0",
+		"defuddle": "0.19.3",
+		"linkedom": "^0.16.0",
+		"turndown": "^7.2.0",
+		"unpdf": "^1.6.2"
+	},
+	"devDependencies": {
+		"@types/node": "^24.0.0",
+		"@types/turndown": "^5.0.6",
+		"typescript": "^5.0.0"
+	}
 }
