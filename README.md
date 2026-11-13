@@ -12,19 +12,7 @@ Minimal web access for Pi: search, fetch pages, page stored content, and check c
 pi install git:github.com/S1M0N38/pi-web
 ```
 
-## Remove
-
-```bash
-pi remove git:github.com/S1M0N38/pi-web
-```
-
-```bash
-rm "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
-```
-
-## Configuration
-
-Create `$PI_CODING_AGENT_DIR/web.json` (default: `~/.pi/agent/web.json`):
+Then create `$PI_CODING_AGENT_DIR/web.json` (default: `~/.pi/agent/web.json`):
 
 ```json
 {
@@ -46,15 +34,23 @@ chmod 600 "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
 - Brave, Tavily, Exa offer free usage/credits. DuckDuckGo needs no API key.
 - Missing or invalid config fails at extension load.
 
+## Remove
+
+```bash
+pi remove git:github.com/S1M0N38/pi-web
+```
+
+```bash
+rm "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
+```
+
 ## Optional CLIs
 
-These are only needed when a handoff targets them:
+These CLIs are optional but strongly recommended. These are only needed when a handoff targets them:
 
 - [`gh`](https://github.com/cli/cli) and [`git`](https://github.com/git/git) — GitHub repositories and Gists
 - [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) — YouTube
 - [`opencli`](https://github.com/jackwener/OpenCLI) — login-gated sites such as Reddit, X, and many others (truly crazy)
-- `curl` — Gist raw fallback
-- built-in `bash` / `read` — local files
 
 ## How it works
 
