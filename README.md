@@ -1,8 +1,8 @@
 # pi-web
 
-> Heavily inspired from the popular [pi-web-access](https://github.com/nicobailon/pi-web-access)
+> Heavily inspired by the popular [pi-web-access](https://github.com/nicobailon/pi-web-access)
 
-Minimal web access for Pi: search, fetch pages, page stored content, and check claims. If web is not the best way to get some data, it handoff to a specialized cli.
+Minimal web access for Pi: search, fetch pages, page stored content, and check claims. If web is not the best way to get some data, it hands off to specialized CLI tools.
 
 ## Install
 
@@ -27,10 +27,10 @@ Create `$PI_CODING_AGENT_DIR/web.json` (default: `~/.pi/agent/web.json`):
 ```json
 {
   "providers": ["brave", "tavily", "exa", "duckduckgo"],
-  "braveApiKey": "$BRAVE_API_KEY",
+  "braveApiKey": "brv-...",
   "tavilyApiKey": "$TAVILY_API_KEY",
-  "exaApiKey": "$EXA_API_KEY",
-  "answerModel": "provider/model"
+  "exaApiKey": "!security find-generic-password -s exa -w",
+  "answerModel": "provider/model:reasoning-lvl"
 }
 ```
 
@@ -39,9 +39,9 @@ chmod 600 "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
 ```
 
 - `providers` is ordered fallback. Only rate limits fall through to the next provider.
-- API keys can be literal strings or `$ENV_VAR` templates. Only keys for listed providers are required.
+- API keys can be literal strings, `$ENV_VAR` or `!cmd`. Only keys for listed providers are required.
 - `answerModel` is a Pi model reference and uses Pi's existing model authentication.
-- All four providers — Brave, Tavily, Exa, and DuckDuckGo — offer free usage/credits. DuckDuckGo needs no API key.
+- Brave, Tavily, Exa offer free usage/credits. DuckDuckGo needs no API key.
 - Missing or invalid config fails at extension load.
 
 ## Optional CLIs
@@ -50,7 +50,7 @@ These are only needed when a handoff targets them:
 
 - [`gh`](https://github.com/cli/cli) and [`git`](https://github.com/git/git) — GitHub repositories and Gists
 - [`yt-dlp`](https://github.com/yt-dlp/yt-dlp) — YouTube
-- [`opencli`](https://github.com/jackwener/OpenCLI) — login-gated sites such as Reddit, X, and others
+- [`opencli`](https://github.com/jackwener/OpenCLI) — login-gated sites such as Reddit, X, and many others (truly crazy)
 - `curl` — Gist raw fallback
 - built-in `bash` / `read` — local files
 
