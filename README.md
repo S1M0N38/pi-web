@@ -54,31 +54,51 @@ These are only needed when a handoff targets them:
 
 ## How it works
 
-`pi-web` exposes exactly four tools:
-
-- **`web_search`** — searches with the configured providers and stores ranked results.
-- **`fetch_content`** — fetches a URL as readable text, raw content, PDF text, or an answer.
-- **`get_search_content`** — pages the stored result of a previous search or fetch by `responseId`.
-- **`source_check`** — searches and fetches evidence for a claim, then returns sources and passages. It does not declare a claim true or false.
+`pi-web` exposes exactly four tools. The model calls them; the three network-facing tools store their output under a `responseId`.
 
 ```mermaid
-flowchart TD
-    U[User / model] --> WS[web_search]
-    U --> FC[fetch_content]
-    U --> SC[source_check]
+flowchart TB
+    M["Model"]
 
-    WS --> P[Brave / Tavily / Exa / DuckDuckGo]
-    WS --> ST[(Stored results)]
-    FC --> ST
-    SC --> WS
-    SC --> FC
-    SC --> ST
+    M -->|"search"| WS["web_search"]
+    M -->|"read"| FC["fetch_content"]
+    M -->|"check claim"| SC["source_check"]
+    M -->|"page by responseId"| GC["get_search_content"]
 
-    ST --> GC[get_search_content]
+    WS --> P["Ranked results<br/>Brave → Tavily → Exa → DuckDuckGo"]
+    FC --> W["Fetched content<br/>web page · PDF · text"]
+    SC --> E["Evidence artifact<br/>sources · passages · hashes"]
 
-    FC -->|special domain| HO[HANDOFF → gh / git / yt-dlp / opencli / bash]
-    HO --> CLI[Native CLI]
-    CLI --> OUT[Content for the model]
+    P --> ST[("In-memory store<br/>responseId → result · LRU")]
+    W --> ST
+    E --> ST
+    GC <-->|"offset / limit"| ST
 ```
 
-Searches and fetches are stored locally and retrieved through `get_search_content`. For special domains, `fetch_content` does not clone or download anything itself: it returns a `HANDOFF → <tool>` result with commands to run. A handoff is a normal result, not an error. Real failures return `ERROR: <url>`.
+- **`web_search`** — searches one or more queries through the ordered provider chain and stores ranked results.
+- **`fetch_content`** — fetches URLs as readable Markdown, raw text, PDF text, or a grounded answer.
+- **`source_check`** — searches for a claim, optionally fetches up to five results, classifies sources, extracts passages, and stores an evidence artifact. It reports `unclear` or `missing-evidence`; it never declares a verdict.
+- **`get_search_content`** — pages a stored search, fetch, or research artifact by `responseId`.
+
+`web_search`, `fetch_content`, and `source_check` return their results inline and keep them in an in-memory, LRU-bounded store. `get_search_content` pages that stored result with `offset` and `limit`, so the model can read more without fetching again. The store is not written to disk and does not survive the Pi process.
+
+### `fetch_content` routing
+
+Each URL is routed before it is fetched:
+
+```mermaid
+flowchart LR
+    U["URL"] --> K{"Target"}
+
+    K -->|"normal URL"| MO{"mode"}
+    K -->|"GitHub/Gist · YouTube · login-gated"| H["HANDOFF result<br/>not an error"]
+    K -->|"local path / file:"| E["ERROR<br/>use bash / read"]
+
+    MO -->|"readable"| R["Fetch + extract<br/>HTML · PDF · text"]
+    MO -->|"raw"| C["Fetch raw body"]
+    MO -->|"answer"| A["Fetch + answer model"]
+
+    H -.->|"model runs"| N["gh/git · yt-dlp · opencli"]
+```
+
+For special hosts, `fetch_content` does not clone or download anything itself: it returns a `HANDOFF → <tool>` result with commands to run, and the model then calls the native tool. A handoff is a normal result, not an error, and is stored under the fetch's `responseId`. Local paths are rejected; use the built-in `bash` / `read` tools. Real fetch failures return `ERROR: <url>`.
