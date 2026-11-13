@@ -1,6 +1,8 @@
 # pi-web
 
-Minimal web access for Pi: search, fetch pages, page stored content, and check claims.
+> Heavily inspired from the popular [pi-web-access](https://github.com/nicobailon/pi-web-access)
+
+Minimal web access for Pi: search, fetch pages, page stored content, and check claims. If web is not the best way to get some data, it handoff to a specialized cli.
 
 ## Install
 
