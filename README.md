@@ -4,6 +4,8 @@
 
 Minimal web access for Pi: search, fetch pages, page stored content, and check claims. If web is not the best way to get some data, it hands off to specialized CLI tools.
 
+*How many tokens pi-web add to context?* **~1k**
+
 ## Install
 
 ```bash
