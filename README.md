@@ -31,7 +31,7 @@ chmod 600 "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
 - `providers` is ordered fallback. Only rate limits fall through to the next provider.
 - API keys can be literal strings, `$ENV_VAR` or `!cmd`. Only keys for listed providers are required.
 - `answerModel` is a Pi model reference and uses Pi's existing model authentication.
-- Brave, Tavily, Exa offer free usage/credits. DuckDuckGo needs no API key.
+- [Brave](https://brave.com/search/api/), [Tavily](https://tavily.com/), [Exa](https://exa.ai/) offer free usage/credits. DuckDuckGo needs no API key.
 - Missing or invalid config fails at extension load.
 
 ## Remove
