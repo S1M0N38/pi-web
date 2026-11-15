@@ -34,6 +34,17 @@ pi remove git:github.com/S1M0N38/pi-web
 rm "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
 ```
 
+## Usage
+
+`pi-web` exposes exactly four tools. The model calls them; the network-facing ones return their result inline and store it under a `responseId`.
+
+- **`web_search`** — searches one or more queries through the ordered provider chain and stores ranked results.
+- **`fetch_content`** — fetches URLs as readable Markdown, raw text, PDF text, or a grounded answer.
+- **`source_check`** — searches for a claim, optionally fetches results, classifies sources, extracts passages, and stores an evidence artifact. It reports `unclear` or `missing-evidence`; it never declares a verdict.
+- **`get_search_content`** — pages a stored search, fetch, or research artifact by `responseId` with `offset` and `limit`, so the model can read more without fetching again.
+
+The store is in-memory and LRU-bounded; it is not written to disk and does not survive the Pi process.
+
 ## Configuration
 
 ```json
@@ -52,17 +63,6 @@ rm "${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}/web.json"
 - Unknown keys are rejected, so a typo fails loudly instead of being ignored.
 - [Brave](https://brave.com/search/api/), [Tavily](https://tavily.com/), [Exa](https://exa.ai/) offer free usage/credits. DuckDuckGo needs no API key.
 - Missing or invalid config fails at extension load.
-
-## Usage
-
-`pi-web` exposes exactly four tools. The model calls them; the network-facing ones return their result inline and store it under a `responseId`.
-
-- **`web_search`** — searches one or more queries through the ordered provider chain and stores ranked results.
-- **`fetch_content`** — fetches URLs as readable Markdown, raw text, PDF text, or a grounded answer.
-- **`source_check`** — searches for a claim, optionally fetches results, classifies sources, extracts passages, and stores an evidence artifact. It reports `unclear` or `missing-evidence`; it never declares a verdict.
-- **`get_search_content`** — pages a stored search, fetch, or research artifact by `responseId` with `offset` and `limit`, so the model can read more without fetching again.
-
-The store is in-memory and LRU-bounded; it is not written to disk and does not survive the Pi process.
 
 ## Optional CLIs
 
