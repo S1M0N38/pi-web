@@ -53,6 +53,8 @@ Iterate on a local checkout instead of pushing to GitHub for every edit.
 
 Notes:
 
+- In a Pi session in this repo, `/install local` and `/install github` do steps 1 and 5
+  for you (`.pi/extensions/install.ts`), then reload.
 - The local entry is written to `settings.json` relative to the agent dir, so it is
   machine-local by design — never commit or copy it between machines.
 - Real configuration lives at `$PI_CODING_AGENT_DIR/web.json`. Tests never read it.
