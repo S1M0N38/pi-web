@@ -1,10 +1,10 @@
 /**
- * `/install` — switch this checkout between the published (git) package and the
- * local one, without leaving Pi.
+ * `/source` — show or switch where this checkout is installed from: the published
+ * (git) package or the local working copy.
  *
- *   /install           show where this checkout is installed from
- *   /install github    install git:<remote>, remove the local entry
- *   /install local     install this checkout's path, remove the git entry
+ *   /source            show where this checkout is installed from
+ *   /source github    install git:<remote>, remove the local entry
+ *   /source local     install this checkout's path, remove the git entry
  *
  * Project extension: it only loads in this repository.
  */
@@ -16,7 +16,7 @@ import { getAgentDir } from "@earendil-works/pi-coding-agent";
 import type { ExtensionAPI, ExtensionCommandContext } from "@earendil-works/pi-coding-agent";
 import type { AutocompleteItem } from "@earendil-works/pi-tui";
 
-const USAGE = "usage: /install local|github";
+const USAGE = "usage: /source local|github";
 const INSTALL_TIMEOUT_MS = 120_000;
 const REMOVE_TIMEOUT_MS = 30_000;
 const SOURCE_PREFIX = /^(?:git:|npm:|https?:|builtin:)/;
@@ -134,8 +134,8 @@ async function resolveState(exec: Exec, cwd: string): Promise<State> {
 
 function describe(state: State): string {
 	if (state.local && state.github) return `installed from local and ${state.gitSource} — ${USAGE}`;
-	if (state.local) return `installed from local (${state.localEntry}) — /install github to switch`;
-	if (state.github) return `installed from ${state.gitSource} — /install local to switch`;
+	if (state.local) return `installed from local (${state.localEntry}) — /source github to switch`;
+	if (state.github) return `installed from ${state.gitSource} — /source local to switch`;
 	return `not installed — ${USAGE}`;
 }
 
@@ -181,9 +181,9 @@ async function switchTo(mode: Mode, exec: Exec, ctx: ExtensionCommandContext): P
 	await ctx.reload();
 }
 
-export default function installCommand(pi: ExtensionAPI): void {
+export default function sourceCommand(pi: ExtensionAPI): void {
 	const exec: Exec = (command, args, timeout) => pi.exec(command, args, { timeout });
-	pi.registerCommand("install", {
+	pi.registerCommand("source", {
 		description: "Show or switch where this checkout is installed from (local or github)",
 		getArgumentCompletions: (prefix): AutocompleteItem[] | null => {
 			const items = ["github", "local"].filter((value) => value.startsWith(prefix.trim()));
