@@ -2,7 +2,14 @@
 
 ## Development
 
-Point pi at this checkout instead of pushing to GitHub for every edit.
+Point pi at this checkout instead of pushing to GitHub for every edit. `/source` is not
+built in — it comes from [pi-source](https://github.com/S1M0N38/pi-source):
+
+```sh
+pi install git:github.com/S1M0N38/pi-source
+```
+
+Then, in a session started in this repository:
 
 ```
 /source local     # install this checkout, remove the git entry, reload
